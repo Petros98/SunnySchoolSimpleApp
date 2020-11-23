@@ -1,14 +1,11 @@
 package com.sunnyschool.simpleapp.ui.gallery
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.sunnyschool.simpleapp.R
 import com.sunnyschool.simpleapp.setImage
 
@@ -19,11 +16,7 @@ class GalleryAdapter(
     RecyclerView.Adapter<GalleryAdapter.GalleryItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryItemViewHolder {
-        val layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
-        val view: View = layoutInflater.inflate(R.layout.item_gallery, parent, false)
-
-        Log.d("rv", "onCreateViewHolder")
-
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_gallery, parent, false)
         return GalleryItemViewHolder(view)
     }
 
@@ -34,7 +27,14 @@ class GalleryAdapter(
     override fun getItemCount(): Int = galleryData.size
 
     inner class GalleryItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+        private var mData: GalleryData? = null
+        init{
+            view.setOnClickListener {
+                mData?.let { it1 -> onClick.invoke(it1) }
+            }
+        }
         fun bind(data: GalleryData) {
+            mData = data
             val imageView: ImageView = view.findViewById(R.id.galleryImage)
             val textView: TextView = view.findViewById(R.id.artistNameText)
             view.setOnClickListener {
